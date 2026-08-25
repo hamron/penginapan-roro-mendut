@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/*
+  Palet warna website. Ganti nilai di sini kalau mau ubah tema
+  seluruh halaman sekaligus.
+*/
+@theme {
+  --color-brand-50: oklch(0.97 0.02 60);
+  --color-brand-100: oklch(0.94 0.04 60);
+  --color-brand-200: oklch(0.88 0.07 58);
+  --color-brand-300: oklch(0.81 0.11 55);
+  --color-brand-400: oklch(0.73 0.14 50);
+  --color-brand-500: oklch(0.65 0.16 45);
+  --color-brand-600: oklch(0.56 0.15 42);
+  --color-brand-700: oklch(0.47 0.13 40);
+  --color-brand-800: oklch(0.38 0.10 38);
+  --color-brand-900: oklch(0.29 0.07 36);
+
+  --color-ink-50: oklch(0.98 0.004 80);
+  --color-ink-100: oklch(0.95 0.006 80);
+  --color-ink-200: oklch(0.89 0.008 80);
+  --color-ink-400: oklch(0.65 0.012 80);
+  --color-ink-600: oklch(0.48 0.014 80);
+  --color-ink-800: oklch(0.28 0.014 80);
+  --color-ink-900: oklch(0.19 0.012 80);
+
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset supaya judul section tidak ketutup header yang menempel */
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: var(--color-ink-50);
+  color: var(--color-ink-800);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hormati pengguna yang mematikan animasi di setelan perangkatnya */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

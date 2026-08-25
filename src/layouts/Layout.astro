@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import { site, alamatLengkap } from '../config';
+
+interface Props {
+  judul?: string;
+  deskripsi?: string;
+  /** Path gambar untuk pratinjau saat link dibagikan di WA/Facebook */
+  gambar?: string;
+}
+
+const {
+  judul,
+  deskripsi = site.deskripsi,
+  gambar = '/og-image.jpg',
+} = Astro.props;
+
+const judulLengkap = judul ? `${judul} — ${site.nama}` : `${site.nama} — ${site.tagline}`;
+const urlKanonik = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const urlGambar = new URL(gambar, Astro.site ?? site.url).href;
+
+/*
+  Data terstruktur schema.org. Ini yang bikin Google menampilkan
+  nama, alamat, harga, dan bintang hotel langsung di hasil pencarian.
+*/
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LodgingBusiness',
+  name: site.nama,
+  description: site.deskripsi,
+  url: site.url,
+  telephone: site.telepon,
+  email: site.email,
+  image: urlGambar,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.alamat.jalan,
+    addressLocality: site.alamat.kota,
+    addressRegion: site.alamat.provinsi,
+    postalCode: site.alamat.kodePos,
+    addressCountry: site.alamat.negara,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.koordinat.lat,
+    longitude: site.koordinat.lng,
+  },
+  checkinTime: site.jamOperasional.checkIn,
+  checkoutTime: site.jamOperasional.checkOut,
+};
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={urlKanonik} />
+
+    <title>{judulLengkap}</title>
+    <meta name="description" content={deskripsi} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.nama} />
+    <meta property="og:title" content={judulLengkap} />
+    <meta property="og:description" content={deskripsi} />
+    <meta property="og:image" content={urlGambar} />
+    <meta property="og:url" content={urlKanonik} />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+  </head>
+
+  <body>
+    <a
+      href="#konten"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
+    >
+      Lompat ke konten utama
+    </a>
+
+    <slot name="header" />
+
+    <main id="konten">
+      <slot />
+    </main>
+
+    <slot name="footer" />
+
+    <!-- Alamat dipakai schema.org di atas; disimpan di sini agar tidak hilang saat refactor -->
+    <span class="sr-only">{alamatLengkap}</span>
+  </body>
+</html>

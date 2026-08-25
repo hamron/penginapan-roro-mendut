@@ -1,0 +1,83 @@
+---
+import { site, linkWhatsApp } from '../config';
+
+const menu = [
+  { label: 'Kamar', href: '#kamar' },
+  { label: 'Fasilitas', href: '#fasilitas' },
+  { label: 'Lokasi', href: '#lokasi' },
+  { label: 'Ulasan', href: '#ulasan' },
+  { label: 'Kontak', href: '#kontak' },
+];
+
+const waPesan = `Halo ${site.namaPendek}, saya ingin bertanya soal ketersediaan kamar.`;
+---
+
+<header class="sticky top-0 z-40 border-b border-ink-200/60 bg-ink-50/85 backdrop-blur">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <a href="/" class="font-display text-lg font-semibold text-ink-900 sm:text-xl">
+      {site.namaPendek}
+    </a>
+
+    <ul class="hidden items-center gap-7 text-sm font-medium text-ink-600 lg:flex">
+      {menu.map((item) => (
+        <li>
+          <a href={item.href} class="transition-colors hover:text-brand-600">{item.label}</a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={linkWhatsApp(waPesan)}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 sm:px-5"
+      >
+        Pesan Sekarang
+      </a>
+
+      <button
+        type="button"
+        id="tombol-menu"
+        aria-label="Buka menu"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        class="rounded-lg p-2 text-ink-600 hover:bg-ink-100 lg:hidden"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <ul id="menu-mobile" hidden class="border-t border-ink-200/60 px-4 pb-4 text-sm font-medium text-ink-600 lg:hidden">
+    {menu.map((item) => (
+      <li>
+        <a href={item.href} class="block rounded-lg px-2 py-3 hover:bg-ink-100 hover:text-brand-600">
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</header>
+
+<script>
+  const tombol = document.getElementById('tombol-menu');
+  const menu = document.getElementById('menu-mobile');
+
+  tombol?.addEventListener('click', () => {
+    const terbuka = tombol.getAttribute('aria-expanded') === 'true';
+    tombol.setAttribute('aria-expanded', String(!terbuka));
+    tombol.setAttribute('aria-label', terbuka ? 'Buka menu' : 'Tutup menu');
+    menu?.toggleAttribute('hidden', terbuka);
+  });
+
+  // Tutup menu setelah tamu memilih salah satu tujuan
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).tagName !== 'A') return;
+    tombol?.setAttribute('aria-expanded', 'false');
+    tombol?.setAttribute('aria-label', 'Buka menu');
+    menu.setAttribute('hidden', '');
+  });
+</script>

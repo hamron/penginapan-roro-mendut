@@ -1,0 +1,236 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, linkWhatsApp } from '../config';
+import { daftarKamar, formatRupiah } from '../data/kamar';
+import { daftarFasilitas } from '../data/fasilitas';
+
+const hargaTerendah = Math.min(...daftarKamar.map((k) => k.hargaPerMalam));
+const waUmum = linkWhatsApp(`Halo ${site.namaPendek}, saya ingin bertanya soal ketersediaan kamar.`);
+const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
+---
+
+<Layout>
+  <Header slot="header" />
+
+  {/* ============ HERO ============ */}
+  <section class="bg-gradient-to-b from-brand-50 to-ink-50">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-2">
+      <div>
+        <p class="text-sm font-semibold tracking-wide text-brand-600 uppercase">
+          {site.alamat.kota}
+        </p>
+        <h1 class="mt-3 font-display text-4xl leading-tight font-semibold text-ink-900 sm:text-5xl">
+          {site.tagline}
+        </h1>
+        <p class="mt-5 max-w-lg text-base leading-relaxed text-ink-600">
+          {site.deskripsi}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={waUmum}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          >
+            Pesan via WhatsApp
+          </a>
+          <a
+            href="#kamar"
+            class="rounded-full border border-ink-200 bg-white px-6 py-3 text-sm font-semibold text-ink-800 transition-colors hover:border-brand-300 hover:text-brand-700"
+          >
+            Lihat kamar
+          </a>
+        </div>
+
+        <p class="mt-6 text-sm text-ink-600">
+          Mulai <span class="font-semibold text-ink-900">{formatRupiah(hargaTerendah)}</span> per malam
+          &middot; Pesan langsung, tanpa biaya tambahan
+        </p>
+      </div>
+
+      {/* TODO: ganti dengan foto asli, simpan sebagai public/hero.jpg */}
+      <div class="aspect-4/3 w-full overflow-hidden rounded-2xl bg-brand-100 shadow-xl ring-1 ring-ink-200/50">
+        <div class="flex h-full flex-col items-center justify-center gap-1 text-center text-sm text-brand-700">
+          <span>Foto utama homestay</span>
+          <span class="text-xs text-brand-600">simpan di public/hero.jpg</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============ FASILITAS ============ */}
+  <section id="fasilitas" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <h2 class="font-display text-3xl font-semibold text-ink-900">Fasilitas</h2>
+    <p class="mt-2 text-ink-600">Semua yang kamu butuhkan untuk istirahat yang nyaman.</p>
+
+    <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {daftarFasilitas.map((f) => (
+        <li class="flex gap-4 rounded-xl border border-ink-200 bg-white p-5">
+          <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d={f.ikon} />
+            </svg>
+          </span>
+          <div>
+            <p class="font-semibold text-ink-900">{f.nama}</p>
+            <p class="mt-1 text-sm text-ink-600">{f.ket}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {/* ============ KAMAR ============ */}
+  <section id="kamar" class="border-y border-ink-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <h2 class="font-display text-3xl font-semibold text-ink-900">Pilihan Kamar</h2>
+      <p class="mt-2 text-ink-600">Harga sudah termasuk sarapan dan pajak.</p>
+
+      <div class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {daftarKamar.map((kamar) => (
+          <article class="flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-ink-50">
+            <div class="flex aspect-3/2 items-center justify-center bg-brand-100 text-xs text-brand-700">
+              {kamar.gambar}
+            </div>
+
+            <div class="flex flex-1 flex-col p-5">
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="font-display text-xl font-semibold text-ink-900">{kamar.nama}</h3>
+                {!kamar.tersedia && (
+                  <span class="shrink-0 rounded-full bg-ink-200 px-2.5 py-1 text-xs font-medium text-ink-600">
+                    Penuh
+                  </span>
+                )}
+              </div>
+
+              <p class="mt-2 text-sm leading-relaxed text-ink-600">{kamar.deskripsi}</p>
+
+              <dl class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-ink-600">
+                <div><dt class="sr-only">Kapasitas</dt><dd>{kamar.kapasitas} tamu</dd></div>
+                <div><dt class="sr-only">Ukuran</dt><dd>{kamar.ukuran}</dd></div>
+                <div class="col-span-2"><dt class="sr-only">Kasur</dt><dd>{kamar.tipeKasur}</dd></div>
+              </dl>
+
+              <ul class="mt-4 flex flex-wrap gap-1.5">
+                {kamar.fasilitas.map((f) => (
+                  <li class="rounded-md bg-white px-2 py-1 text-xs text-ink-600 ring-1 ring-ink-200">{f}</li>
+                ))}
+              </ul>
+
+              <div class="mt-6 flex items-end justify-between gap-3 border-t border-ink-200 pt-5">
+                <p class="text-lg font-semibold text-ink-900">
+                  {formatRupiah(kamar.hargaPerMalam)}<span class="text-sm font-normal text-ink-600">/malam</span>
+                </p>
+                <a
+                  href={linkWhatsApp(`Halo ${site.namaPendek}, saya ingin memesan ${kamar.nama}.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                >
+                  Pesan
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============ LOKASI ============ */}
+  <section id="lokasi" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <h2 class="font-display text-3xl font-semibold text-ink-900">Lokasi</h2>
+    <p class="mt-2 text-ink-600">{site.alamat.jalan}, {site.alamat.kota}</p>
+
+    <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
+      {site.petaEmbed ? (
+        <iframe
+          src={site.petaEmbed}
+          title={`Peta lokasi ${site.nama}`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="h-96 w-full border-0"
+        />
+      ) : (
+        <p class="p-10 text-center text-sm text-ink-600">
+          Peta belum diatur. Isi <code class="rounded bg-ink-100 px-1.5 py-0.5">petaEmbed</code> di
+          <code class="rounded bg-ink-100 px-1.5 py-0.5">src/config.ts</code>.
+        </p>
+      )}
+    </div>
+  </section>
+
+  {/* ============ ULASAN ============ */}
+  <section id="ulasan" class="border-y border-ink-200 bg-white">
+    <div class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
+      <h2 class="font-display text-3xl font-semibold text-ink-900">Sudah menginap di sini?</h2>
+      <p class="mt-3 text-ink-600">
+        Ulasanmu sangat membantu tamu lain menemukan tempat ini. Cukup satu menit.
+      </p>
+      <a
+        href={site.linkReviewGoogle}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z" />
+        </svg>
+        Beri ulasan di Google
+      </a>
+    </div>
+  </section>
+
+  {/* ============ KONTAK ============ */}
+  <section id="kontak" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <h2 class="font-display text-3xl font-semibold text-ink-900">Hubungi Kami</h2>
+    <p class="mt-2 text-ink-600">Balasan tercepat lewat WhatsApp.</p>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-3">
+      <a
+        href={waUmum}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+      >
+        <p class="font-semibold text-ink-900">WhatsApp</p>
+        <p class="mt-1 text-sm text-ink-600">{site.telepon}</p>
+      </a>
+
+      <a
+        href={`tel:${nomorTelepon}`}
+        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+      >
+        <p class="font-semibold text-ink-900">Telepon</p>
+        <p class="mt-1 text-sm text-ink-600">{site.telepon}</p>
+      </a>
+
+      <a
+        href={`mailto:${site.email}`}
+        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+      >
+        <p class="font-semibold text-ink-900">Email</p>
+        <p class="mt-1 text-sm break-all text-ink-600">{site.email}</p>
+      </a>
+    </div>
+  </section>
+
+  {/* Tombol WhatsApp mengambang, selalu terlihat termasuk di layar kecil */}
+  <a
+    href={waUmum}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Chat WhatsApp"
+    class="fixed right-5 bottom-5 z-40 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105"
+  >
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3a8.2 8.2 0 1 1 7.2 3.9z" />
+      <path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4z" />
+    </svg>
+  </a>
+
+  <Footer slot="footer" />
+</Layout>
