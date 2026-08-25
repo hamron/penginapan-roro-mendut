@@ -1,0 +1,5 @@
+# Samakan akhiran baris supaya file tidak berubah-ubah antar Windows dan Linux
+* text=auto
+
+# GitHub Pages membaca CNAME apa adanya; akhiran baris Windows bisa merusak pencocokan domain
+public/CNAME text eol=lf
