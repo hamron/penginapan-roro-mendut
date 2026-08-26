@@ -1,31 +1,34 @@
 @import "tailwindcss";
 
 /*
-  Palet warna website. Ganti nilai di sini kalau mau ubah tema
-  seluruh halaman sekaligus.
+  Palet warna website — biru dongker, kuning mustard, putih tulang
+  (diadaptasi dari themewagon.github.io/hotelier). Ganti nilai di sini
+  kalau mau ubah tema seluruh halaman sekaligus.
 */
 @theme {
-  --color-brand-50: oklch(0.97 0.02 60);
-  --color-brand-100: oklch(0.94 0.04 60);
-  --color-brand-200: oklch(0.88 0.07 58);
-  --color-brand-300: oklch(0.81 0.11 55);
-  --color-brand-400: oklch(0.73 0.14 50);
-  --color-brand-500: oklch(0.65 0.16 45);
-  --color-brand-600: oklch(0.56 0.15 42);
-  --color-brand-700: oklch(0.47 0.13 40);
-  --color-brand-800: oklch(0.38 0.10 38);
-  --color-brand-900: oklch(0.29 0.07 36);
+  /* Kuning mustard — tombol aksen, label, harga */
+  --color-brand-50: #fff8ec;
+  --color-brand-100: #ffecc9;
+  --color-brand-200: #ffd68e;
+  --color-brand-300: #ffbe57;
+  --color-brand-400: #feaa2e;
+  --color-brand-500: #fea822;
+  --color-brand-600: #fea116;
+  --color-brand-700: #e08a0a;
+  --color-brand-800: #b86f08;
+  --color-brand-900: #8a5406;
 
-  --color-ink-50: oklch(0.98 0.004 80);
-  --color-ink-100: oklch(0.95 0.006 80);
-  --color-ink-200: oklch(0.89 0.008 80);
-  --color-ink-400: oklch(0.65 0.012 80);
-  --color-ink-600: oklch(0.48 0.014 80);
-  --color-ink-800: oklch(0.28 0.014 80);
-  --color-ink-900: oklch(0.19 0.012 80);
+  /* Biru dongker + putih tulang — teks, latar, header, tombol gelap */
+  --color-ink-50: #f1f8ff;
+  --color-ink-100: #e5edf7;
+  --color-ink-200: #d3ddea;
+  --color-ink-400: #8b97ab;
+  --color-ink-600: #666565;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172b;
 
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -39,6 +42,15 @@ body {
   color: var(--color-ink-800);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Sembunyikan scrollbar pada carousel kamar, geser tetap berfungsi */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Hormati pengguna yang mematikan animasi di setelan perangkatnya */

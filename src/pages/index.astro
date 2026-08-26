@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site, linkWhatsApp } from '../config';
+import FormPemesanan from '../components/FormPemesanan.astro';
+import { site, linkWhatsApp, linkPetaEmbed, linkGoogleMaps } from '../config';
 import { daftarKamar, formatRupiah } from '../data/kamar';
 import { daftarFasilitas } from '../data/fasilitas';
 
@@ -15,13 +16,13 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
   <Header slot="header" />
 
   {/* ============ HERO ============ */}
-  <section class="bg-gradient-to-b from-brand-50 to-ink-50">
-    <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-2">
+  <section class="bg-ink-50">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2">
       <div>
-        <p class="text-sm font-semibold tracking-wide text-brand-600 uppercase">
+        <p class="text-xs font-bold tracking-[0.2em] text-brand-600 uppercase">
           {site.alamat.kota}
         </p>
-        <h1 class="mt-3 font-display text-4xl leading-tight font-semibold text-ink-900 sm:text-5xl">
+        <h1 class="mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-ink-900 uppercase sm:text-4xl">
           {site.tagline}
         </h1>
         <p class="mt-5 max-w-lg text-base leading-relaxed text-ink-600">
@@ -33,49 +34,57 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
             href={waUmum}
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+            class="rounded-sm bg-brand-600 px-6 py-3 text-xs font-bold tracking-widest text-ink-900 uppercase transition-colors hover:bg-brand-500"
           >
             Pesan via WhatsApp
           </a>
           <a
             href="#kamar"
-            class="rounded-full border border-ink-200 bg-white px-6 py-3 text-sm font-semibold text-ink-800 transition-colors hover:border-brand-300 hover:text-brand-700"
+            class="rounded-sm border border-ink-800 px-6 py-3 text-xs font-bold tracking-widest text-ink-800 uppercase transition-colors hover:border-brand-600 hover:text-brand-600"
           >
             Lihat kamar
           </a>
         </div>
 
         <p class="mt-6 text-sm text-ink-600">
-          Mulai <span class="font-semibold text-ink-900">{formatRupiah(hargaTerendah)}</span> per malam
+          Mulai <span class="font-bold text-ink-900">{formatRupiah(hargaTerendah)}</span> per malam
           &middot; Pesan langsung, tanpa biaya tambahan
         </p>
       </div>
 
-      {/* TODO: ganti dengan foto asli, simpan sebagai public/hero.jpg */}
-      <div class="aspect-4/3 w-full overflow-hidden rounded-2xl bg-brand-100 shadow-xl ring-1 ring-ink-200/50">
-        <div class="flex h-full flex-col items-center justify-center gap-1 text-center text-sm text-brand-700">
-          <span>Foto utama homestay</span>
-          <span class="text-xs text-brand-600">simpan di public/hero.jpg</span>
-        </div>
-      </div>
+      <img
+        src="/hero.jpg"
+        alt={`Kamar di ${site.namaPendek}`}
+        width="1600"
+        height="900"
+        class="aspect-4/3 w-full rounded-2xl border border-ink-200 bg-brand-100 object-cover shadow-xl"
+      />
     </div>
   </section>
 
   {/* ============ FASILITAS ============ */}
-  <section id="fasilitas" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-    <h2 class="font-display text-3xl font-semibold text-ink-900">Fasilitas</h2>
-    <p class="mt-2 text-ink-600">Semua yang kamu butuhkan untuk istirahat yang nyaman.</p>
+  <section id="fasilitas" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="text-center">
+      <p class="relative mx-auto inline-block px-14 text-sm font-bold tracking-wide text-brand-600 uppercase">
+        <span class="absolute top-1/2 left-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+        Kenyamanan
+        <span class="absolute top-1/2 right-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+      </p>
+      <h2 class="mt-2 font-display text-3xl font-bold text-ink-900">
+        Fasilitas <span class="text-brand-600 uppercase">Kami</span>
+      </h2>
+    </div>
 
     <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {daftarFasilitas.map((f) => (
-        <li class="flex gap-4 rounded-xl border border-ink-200 bg-white p-5">
+        <li class="flex gap-4 rounded-xl border border-ink-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
           <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d={f.ikon} />
             </svg>
           </span>
           <div>
-            <p class="font-semibold text-ink-900">{f.nama}</p>
+            <p class="text-sm font-bold tracking-wide text-ink-900 uppercase">{f.nama}</p>
             <p class="mt-1 text-sm text-ink-600">{f.ket}</p>
           </div>
         </li>
@@ -85,88 +94,168 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
 
   {/* ============ KAMAR ============ */}
   <section id="kamar" class="border-y border-ink-200 bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <h2 class="font-display text-3xl font-semibold text-ink-900">Pilihan Kamar</h2>
-      <p class="mt-2 text-ink-600">Harga sudah termasuk sarapan dan pajak.</p>
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <div class="text-center">
+        <p class="relative mx-auto inline-block px-14 text-sm font-bold tracking-wide text-brand-600 uppercase">
+          <span class="absolute top-1/2 left-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+          Menginap
+          <span class="absolute top-1/2 right-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+        </p>
+        <h2 class="mt-2 font-display text-3xl font-bold text-ink-900">
+          Pilihan <span class="text-brand-600 uppercase">Kamar</span>
+        </h2>
+      </div>
 
-      <div class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {daftarKamar.map((kamar) => (
-          <article class="flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-ink-50">
-            <div class="flex aspect-3/2 items-center justify-center bg-brand-100 text-xs text-brand-700">
-              {kamar.gambar}
-            </div>
+      <div class="relative mt-10">
+        <button
+          type="button"
+          data-carousel-prev
+          aria-label="Kamar sebelumnya"
+          class="absolute top-[28.5%] -left-10 z-10 hidden size-10 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-800 shadow-md transition-colors hover:border-brand-300 hover:text-brand-600 lg:flex"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
 
-            <div class="flex flex-1 flex-col p-5">
-              <div class="flex items-start justify-between gap-3">
-                <h3 class="font-display text-xl font-semibold text-ink-900">{kamar.nama}</h3>
-                {!kamar.tersedia && (
-                  <span class="shrink-0 rounded-full bg-ink-200 px-2.5 py-1 text-xs font-medium text-ink-600">
-                    Penuh
-                  </span>
-                )}
-              </div>
-
-              <p class="mt-2 text-sm leading-relaxed text-ink-600">{kamar.deskripsi}</p>
-
-              <dl class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-ink-600">
-                <div><dt class="sr-only">Kapasitas</dt><dd>{kamar.kapasitas} tamu</dd></div>
-                <div><dt class="sr-only">Ukuran</dt><dd>{kamar.ukuran}</dd></div>
-                <div class="col-span-2"><dt class="sr-only">Kasur</dt><dd>{kamar.tipeKasur}</dd></div>
-              </dl>
-
-              <ul class="mt-4 flex flex-wrap gap-1.5">
-                {kamar.fasilitas.map((f) => (
-                  <li class="rounded-md bg-white px-2 py-1 text-xs text-ink-600 ring-1 ring-ink-200">{f}</li>
-                ))}
-              </ul>
-
-              <div class="mt-6 flex items-end justify-between gap-3 border-t border-ink-200 pt-5">
-                <p class="text-lg font-semibold text-ink-900">
-                  {formatRupiah(kamar.hargaPerMalam)}<span class="text-sm font-normal text-ink-600">/malam</span>
-                </p>
-                <a
-                  href={linkWhatsApp(`Halo ${site.namaPendek}, saya ingin memesan ${kamar.nama}.`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
-                >
-                  Pesan
+        <ul data-carousel-track class="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2">
+          {daftarKamar.map((kamar) => (
+            <li class="w-[85%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-3rem)/3)]">
+              <div class="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
+                <a href={`/kamar/${kamar.id}`} class="group block">
+                  <div class="relative overflow-hidden border-b border-ink-200">
+                    <img
+                      src={kamar.gambar}
+                      alt={kamar.nama}
+                      width="1200"
+                      height="800"
+                      class="aspect-4/3 w-full bg-brand-100 object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span class="absolute top-3 left-3 rounded-sm bg-brand-600 px-3 py-1.5 text-xs font-bold text-ink-900 sm:text-sm">
+                      Mulai {formatRupiah(kamar.hargaPerMalam)}/malam
+                    </span>
+                    {!kamar.tersedia && (
+                      <span class="absolute top-3 right-3 bg-ink-900/80 px-2.5 py-1 text-xs font-bold tracking-wide text-white uppercase">
+                        Penuh
+                      </span>
+                    )}
+                  </div>
                 </a>
+
+                <div class="relative p-5 shadow-[inset_0_6px_8px_-8px_rgba(0,0,0,0.3)]">
+                  <a href={`/kamar/${kamar.id}`} class="hover:text-brand-600">
+                    <h3 class="font-display text-xl font-bold text-ink-900">{kamar.nama}</h3>
+                  </a>
+
+                  <ul class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-600">
+                    <li class="flex items-center gap-1.5">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-600" aria-hidden="true"><path d="M17 10H3a1 1 0 0 0-1 1v6h1v-3h18v3h1v-6a1 1 0 0 0-1-1zM4 8V6a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2M15 8V6a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2" /></svg>
+                      {kamar.tipeKasur}
+                    </li>
+                    <li class="flex items-center gap-1.5">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-600" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M22 11h-6" /></svg>
+                      {kamar.kapasitas} Tamu
+                    </li>
+                    {kamar.ukuran && (
+                      <li class="flex items-center gap-1.5">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-600" aria-hidden="true"><path d="M3 15a4 4 0 0 1 8 0M12 15a4 4 0 0 1 8 0M3 15v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3M7 15v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" /></svg>
+                        {kamar.ukuran}
+                      </li>
+                    )}
+                  </ul>
+
+                  <p class="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-600">{kamar.deskripsi}</p>
+
+                  <div class="mt-4 grid grid-cols-2 gap-2">
+                    <a
+                      href={`/kamar/${kamar.id}`}
+                      class="rounded-sm bg-brand-600 px-4 py-2.5 text-center text-xs leading-tight font-bold tracking-widest text-ink-900 uppercase transition-colors hover:bg-brand-500"
+                    >
+                      Lihat<br />Detail
+                    </a>
+                    <a
+                      href={linkWhatsApp(`Halo ${site.namaPendek}, saya ingin memesan ${kamar.nama}.`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="rounded-sm bg-ink-900 px-4 py-2.5 text-center text-xs leading-tight font-bold tracking-widest text-white uppercase transition-colors hover:bg-ink-800"
+                    >
+                      Pesan<br />Sekarang
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </li>
+          ))}
+        </ul>
+
+        <button
+          type="button"
+          data-carousel-next
+          aria-label="Kamar berikutnya"
+          class="absolute top-[28.5%] -right-10 z-10 hidden size-10 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-800 shadow-md transition-colors hover:border-brand-300 hover:text-brand-600 lg:flex"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
       </div>
     </div>
   </section>
 
-  {/* ============ LOKASI ============ */}
-  <section id="lokasi" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-    <h2 class="font-display text-3xl font-semibold text-ink-900">Lokasi</h2>
-    <p class="mt-2 text-ink-600">{site.alamat.jalan}, {site.alamat.kota}</p>
+  <script>
+    const track = document.querySelector('[data-carousel-track]');
+    const prev = document.querySelector('[data-carousel-prev]');
+    const next = document.querySelector('[data-carousel-next]');
 
-    <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
-      {site.petaEmbed ? (
-        <iframe
-          src={site.petaEmbed}
-          title={`Peta lokasi ${site.nama}`}
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          class="h-96 w-full border-0"
-        />
-      ) : (
-        <p class="p-10 text-center text-sm text-ink-600">
-          Peta belum diatur. Isi <code class="rounded bg-ink-100 px-1.5 py-0.5">petaEmbed</code> di
-          <code class="rounded bg-ink-100 px-1.5 py-0.5">src/config.ts</code>.
-        </p>
-      )}
+    function scrollByCard(dir: number) {
+      const card = track?.querySelector('li');
+      if (!track || !card) return;
+      const gap = 24; // gap-6
+      const amount = (card.getBoundingClientRect().width + gap) * dir;
+      track.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+
+    prev?.addEventListener('click', () => scrollByCard(-1));
+    next?.addEventListener('click', () => scrollByCard(1));
+  </script>
+
+  {/* ============ LOKASI ============ */}
+  <section id="lokasi" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="text-center">
+      <p class="relative mx-auto inline-block px-14 text-sm font-bold tracking-wide text-brand-600 uppercase">
+        <span class="absolute top-1/2 left-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+        Temukan Kami
+        <span class="absolute top-1/2 right-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+      </p>
+      <h2 class="mt-2 font-display text-3xl font-bold text-ink-900">
+        Lokasi <span class="text-brand-600 uppercase">Kami</span>
+      </h2>
     </div>
+
+    <div class="mt-8 overflow-hidden rounded-xl border border-ink-200 bg-white shadow-md">
+      <iframe
+        src={linkPetaEmbed()}
+        title={`Peta lokasi ${site.nama}`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-96 w-full border-0"
+      />
+    </div>
+
+    <a
+      href={linkGoogleMaps()}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:underline"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" />
+      </svg>
+      Buka di Google Maps
+    </a>
   </section>
 
   {/* ============ ULASAN ============ */}
   <section id="ulasan" class="border-y border-ink-200 bg-white">
-    <div class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-      <h2 class="font-display text-3xl font-semibold text-ink-900">Sudah menginap di sini?</h2>
+    <div class="mx-auto max-w-3xl px-4 py-14 text-center sm:px-6">
+      <p class="text-xs font-bold tracking-[0.2em] text-brand-600 uppercase">Kata Tamu</p>
+      <h2 class="mt-2 font-display text-2xl font-bold tracking-wide text-ink-900 uppercase">Sudah menginap di sini?</h2>
       <p class="mt-3 text-ink-600">
         Ulasanmu sangat membantu tamu lain menemukan tempat ini. Cukup satu menit.
       </p>
@@ -174,7 +263,7 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
         href={site.linkReviewGoogle}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+        class="mt-7 inline-flex items-center gap-2 rounded-sm bg-brand-600 px-6 py-3 text-xs font-bold tracking-widest text-ink-900 uppercase transition-colors hover:bg-brand-500"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z" />
@@ -184,9 +273,12 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
     </div>
   </section>
 
+  <FormPemesanan />
+
   {/* ============ KONTAK ============ */}
-  <section id="kontak" class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-    <h2 class="font-display text-3xl font-semibold text-ink-900">Hubungi Kami</h2>
+  <section id="kontak" class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <p class="text-xs font-bold tracking-[0.2em] text-brand-600 uppercase">Hubungi Kami</p>
+    <h2 class="mt-2 font-display text-2xl font-bold tracking-wide text-ink-900 uppercase">Kontak</h2>
     <p class="mt-2 text-ink-600">Balasan tercepat lewat WhatsApp.</p>
 
     <div class="mt-10 grid gap-4 sm:grid-cols-3">
@@ -194,25 +286,25 @@ const nomorTelepon = site.telepon.replace(/[^\d+]/g, '');
         href={waUmum}
         target="_blank"
         rel="noopener noreferrer"
-        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+        class="rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-shadow hover:border-brand-300 hover:shadow-md"
       >
-        <p class="font-semibold text-ink-900">WhatsApp</p>
+        <p class="text-xs font-bold tracking-widest text-ink-900 uppercase">WhatsApp</p>
         <p class="mt-1 text-sm text-ink-600">{site.telepon}</p>
       </a>
 
       <a
         href={`tel:${nomorTelepon}`}
-        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+        class="rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-shadow hover:border-brand-300 hover:shadow-md"
       >
-        <p class="font-semibold text-ink-900">Telepon</p>
+        <p class="text-xs font-bold tracking-widest text-ink-900 uppercase">Telepon</p>
         <p class="mt-1 text-sm text-ink-600">{site.telepon}</p>
       </a>
 
       <a
         href={`mailto:${site.email}`}
-        class="rounded-xl border border-ink-200 bg-white p-6 transition-colors hover:border-brand-300"
+        class="rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-shadow hover:border-brand-300 hover:shadow-md"
       >
-        <p class="font-semibold text-ink-900">Email</p>
+        <p class="text-xs font-bold tracking-widest text-ink-900 uppercase">Email</p>
         <p class="mt-1 text-sm break-all text-ink-600">{site.email}</p>
       </a>
     </div>

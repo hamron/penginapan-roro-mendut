@@ -1,0 +1,126 @@
+---
+import { site } from '../config';
+import { daftarKamar } from '../data/kamar';
+
+const kelasInput =
+  'mt-1.5 w-full rounded-sm border border-ink-200 bg-white px-3.5 py-2.5 text-sm text-ink-900 ' +
+  'focus:border-brand-600 focus:ring-1 focus:ring-brand-600 focus:outline-none';
+---
+
+<section id="pesan" class="mx-auto max-w-2xl px-4 py-14 sm:px-6">
+  <div class="text-center">
+    <p class="relative mx-auto inline-block px-14 text-sm font-bold tracking-wide text-brand-600 uppercase">
+      <span class="absolute top-1/2 left-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+      Booking
+      <span class="absolute top-1/2 right-0 h-0.5 w-11 -translate-y-1/2 bg-brand-600" aria-hidden="true"></span>
+    </p>
+    <h2 class="mt-2 font-display text-3xl font-bold text-ink-900">
+      Form Detail Tamu <span class="text-brand-600 uppercase">Menginap</span>
+    </h2>
+    <p class="mt-2 text-ink-600">Isi data di bawah, kirim langsung lewat WhatsApp — tanpa perlu telepon dulu.</p>
+  </div>
+
+  <form
+    id="form-booking"
+    class="mt-8 space-y-4 rounded-xl border border-ink-200 bg-white p-6 shadow-md sm:p-8"
+  >
+    <div>
+      <label for="nama" class="text-sm font-semibold text-ink-900">Nama Pelanggan</label>
+      <input type="text" id="nama" name="nama" required class={kelasInput} placeholder="Nama lengkap" />
+    </div>
+
+    <div>
+      <label for="alamat" class="text-sm font-semibold text-ink-900">Alamat</label>
+      <input type="text" id="alamat" name="alamat" required class={kelasInput} placeholder="Kota / alamat domisili" />
+    </div>
+
+    <div>
+      <label for="whatsapp" class="text-sm font-semibold text-ink-900">No WhatsApp</label>
+      <input
+        type="tel"
+        id="whatsapp"
+        name="whatsapp"
+        required
+        pattern="[0-9+ -]{8,}"
+        class={kelasInput}
+        placeholder="08xx-xxxx-xxxx"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="checkin" class="text-sm font-semibold text-ink-900">Check-in</label>
+        <input type="date" id="checkin" name="checkin" required class={kelasInput} />
+      </div>
+      <div>
+        <label for="checkout" class="text-sm font-semibold text-ink-900">Check-out</label>
+        <input type="date" id="checkout" name="checkout" required class={kelasInput} />
+      </div>
+    </div>
+
+    <div>
+      <label for="kamar" class="text-sm font-semibold text-ink-900">Nomor Kamar</label>
+      <select id="kamar" name="kamar" required class={kelasInput}>
+        <option value="" disabled selected>Pilih kamar</option>
+        {daftarKamar.map((k) => <option value={k.nama}>{k.nama}</option>)}
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full rounded-sm bg-brand-600 px-6 py-3.5 text-xs font-bold tracking-widest text-ink-900 uppercase transition-colors hover:bg-brand-500"
+    >
+      Kirim via WhatsApp
+    </button>
+  </form>
+</section>
+
+<script define:vars={{ waNumber: site.whatsapp }}>
+  const form = document.getElementById('form-booking');
+  const inputCheckin = document.getElementById('checkin');
+  const inputCheckout = document.getElementById('checkout');
+
+  // Cegah pilih tanggal yang sudah lewat
+  const hariIni = new Date().toISOString().split('T')[0];
+  if (inputCheckin) inputCheckin.min = hariIni;
+  if (inputCheckout) inputCheckout.min = hariIni;
+
+  // Check-out minimal sehari setelah check-in
+  inputCheckin?.addEventListener('change', () => {
+    if (!(inputCheckin instanceof HTMLInputElement) || !(inputCheckout instanceof HTMLInputElement)) return;
+    const checkin = new Date(inputCheckin.value);
+    checkin.setDate(checkin.getDate() + 1);
+    const minCheckout = checkin.toISOString().split('T')[0];
+    inputCheckout.min = minCheckout;
+    if (inputCheckout.value && inputCheckout.value < minCheckout) {
+      inputCheckout.value = minCheckout;
+    }
+  });
+
+  function formatTanggal(nilai) {
+    if (!nilai) return '-';
+    return new Date(nilai).toLocaleDateString('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    const pesan =
+      'Halo, saya ingin memesan kamar dengan detail berikut:\n\n' +
+      `Nama: ${data.get('nama')}\n` +
+      `Alamat: ${data.get('alamat')}\n` +
+      `No WhatsApp: ${data.get('whatsapp')}\n` +
+      `Check-in: ${formatTanggal(data.get('checkin'))}\n` +
+      `Check-out: ${formatTanggal(data.get('checkout'))}\n` +
+      `Kamar: ${data.get('kamar')}`;
+
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(pesan)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+</script>

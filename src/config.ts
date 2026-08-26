@@ -8,7 +8,7 @@
 export const site = {
   nama: 'Penginapan Roro Mendut',
   namaPendek: 'Roro Mendut',
-  tagline: 'Menginap tenang, sepelemparan batu dari Borobudur',
+  tagline: 'Menginap tenang, 5 menit dari Candi Borobudur',
   deskripsi:
     'Penginapan bersih dan nyaman di kawasan Borobudur, Magelang. ' +
     'Hanya beberapa menit dari Candi Borobudur, cocok untuk keluarga, ' +
@@ -20,20 +20,24 @@ export const site = {
   whatsapp: '6281231538282',
 
   telepon: '+62 812-3153-8282',
-  email: 'arsbeyhomestay@gmail.com', // TODO: ganti kalau punya email khusus
+  email: 'penginapanroromendut@gmail.com',
 
   alamat: {
-    jalan: 'Jl. Badrawati',           // TODO: alamat jalan lengkap + nomor
-    kelurahan: 'Borobudur',           // TODO: nama dusun/kelurahan
+    jalan: 'Lingk. Mendut II RT 001 RW 004',
+    kelurahan: 'Mendut, Kec. Mungkid',
     kota: 'Magelang',
     provinsi: 'Jawa Tengah',
     kodePos: '56553',                 // TODO: pastikan kode pos benar
     negara: 'ID',
   },
 
-  koordinat: { lat: -7.6041934275785685, lng: 110.22987625767105 },
+  koordinat: { lat: -7.604065806150987, lng: 110.23002645682462 },
 
-  // TODO: Google Maps > Bagikan > Sematkan peta > salin isi src="..."
+  /**
+   * Kosongkan untuk memakai peta otomatis dari koordinat di atas.
+   * Isi hanya kalau mau pakai potongan embed khusus dari Google Maps
+   * (Bagikan > Sematkan peta > salin isi src="...").
+   */
   petaEmbed: '',
 
   /** Membuka kotak bintang Google langsung, tamu tidak perlu cari-cari */
@@ -64,4 +68,15 @@ export const alamatLengkap = [
 /** Bikin link WhatsApp dengan pesan yang sudah terisi otomatis */
 export function linkWhatsApp(pesan: string): string {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(pesan)}`;
+}
+
+/** URL iframe peta — pakai petaEmbed manual kalau diisi, kalau tidak dibuat otomatis dari koordinat */
+export function linkPetaEmbed(): string {
+  if (site.petaEmbed) return site.petaEmbed;
+  return `https://www.google.com/maps?q=${site.koordinat.lat},${site.koordinat.lng}&z=16&output=embed`;
+}
+
+/** Link untuk buka lokasi ini langsung di Google Maps */
+export function linkGoogleMaps(): string {
+  return `https://www.google.com/maps?q=${site.koordinat.lat},${site.koordinat.lng}`;
 }

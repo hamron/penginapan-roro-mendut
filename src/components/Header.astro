@@ -5,6 +5,7 @@ const menu = [
   { label: 'Kamar', href: '#kamar' },
   { label: 'Fasilitas', href: '#fasilitas' },
   { label: 'Lokasi', href: '#lokasi' },
+  { label: 'Booking', href: '#pesan' },
   { label: 'Ulasan', href: '#ulasan' },
   { label: 'Kontak', href: '#kontak' },
 ];
@@ -12,26 +13,33 @@ const menu = [
 const waPesan = `Halo ${site.namaPendek}, saya ingin bertanya soal ketersediaan kamar.`;
 ---
 
-<header class="sticky top-0 z-40 border-b border-ink-200/60 bg-ink-50/85 backdrop-blur">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-    <a href="/" class="font-display text-lg font-semibold text-ink-900 sm:text-xl">
+<header class="sticky top-0 z-40 bg-ink-900">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <a href="/" class="font-display text-lg font-bold tracking-wide text-white uppercase sm:text-xl">
       {site.namaPendek}
     </a>
 
-    <ul class="hidden items-center gap-7 text-sm font-medium text-ink-600 lg:flex">
+    <ul class="hidden items-center gap-7 text-xs font-semibold tracking-wider text-ink-100 uppercase lg:flex">
       {menu.map((item) => (
         <li>
-          <a href={item.href} class="transition-colors hover:text-brand-600">{item.label}</a>
+          <a href={item.href} class="transition-colors hover:text-brand-500">{item.label}</a>
         </li>
       ))}
     </ul>
 
     <div class="flex items-center gap-2">
       <a
+        href={`tel:${site.telepon.replace(/[^\d+]/g, '')}`}
+        class="hidden text-xs font-semibold tracking-wide text-ink-100 hover:text-brand-500 sm:inline"
+      >
+        {site.telepon}
+      </a>
+
+      <a
         href={linkWhatsApp(waPesan)}
         target="_blank"
         rel="noopener noreferrer"
-        class="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 sm:px-5"
+        class="rounded-sm bg-brand-600 px-4 py-2.5 text-xs font-bold tracking-widest text-ink-900 uppercase transition-colors hover:bg-brand-500 sm:px-5"
       >
         Pesan Sekarang
       </a>
@@ -42,7 +50,7 @@ const waPesan = `Halo ${site.namaPendek}, saya ingin bertanya soal ketersediaan 
         aria-label="Buka menu"
         aria-expanded="false"
         aria-controls="menu-mobile"
-        class="rounded-lg p-2 text-ink-600 hover:bg-ink-100 lg:hidden"
+        class="p-2 text-white hover:bg-white/10 lg:hidden"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" />
@@ -51,10 +59,10 @@ const waPesan = `Halo ${site.namaPendek}, saya ingin bertanya soal ketersediaan 
     </div>
   </nav>
 
-  <ul id="menu-mobile" hidden class="border-t border-ink-200/60 px-4 pb-4 text-sm font-medium text-ink-600 lg:hidden">
+  <ul id="menu-mobile" hidden class="border-t border-white/10 px-4 pb-4 text-xs font-semibold tracking-wider text-ink-100 uppercase lg:hidden">
     {menu.map((item) => (
       <li>
-        <a href={item.href} class="block rounded-lg px-2 py-3 hover:bg-ink-100 hover:text-brand-600">
+        <a href={item.href} class="block px-2 py-3 hover:text-brand-500">
           {item.label}
         </a>
       </li>

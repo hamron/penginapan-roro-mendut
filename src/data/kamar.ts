@@ -2,7 +2,8 @@
  * Daftar kamar. Nanti file ini bisa dipindah ke CMS supaya
  * bisa diedit lewat halaman /admin tanpa menyentuh kode.
  *
- * TODO: ganti seluruh isi dengan data kamar aslimu.
+ * hargaPerMalam adalah harga MULAI DARI (bukan harga pasti) — selalu
+ * ditampilkan dengan awalan "Mulai" di halaman, jangan dihapus.
  */
 
 export interface Kamar {
@@ -11,7 +12,8 @@ export interface Kamar {
   deskripsi: string;
   hargaPerMalam: number;
   kapasitas: number;
-  ukuran: string;
+  /** Kosongkan kalau ukuran kamar belum dipastikan — tidak akan ditampilkan */
+  ukuran?: string;
   tipeKasur: string;
   fasilitas: string[];
   /** Taruh file gambar di folder public/kamar/ */
@@ -21,45 +23,60 @@ export interface Kamar {
 
 export const daftarKamar: Kamar[] = [
   {
-    id: 'standard',
+    id: 'ekonomi',
+    nama: 'Kamar Ekonomi',
+    deskripsi:
+      'Kamar hemat dengan satu tempat tidur untuk berdua. Kamar mandi ' +
+      'berada di luar kamar, bersih dan dekat.',
+    hargaPerMalam: 100000,
+    kapasitas: 2,
+    ukuran: '9 m²',
+    tipeKasur: '1 kasur untuk 2 orang',
+    fasilitas: ['Kipas angin', 'Kamar mandi luar'],
+    gambar: '/kamar/standard.jpg',
+    tersedia: true,
+  },
+  {
+    id: 'standar',
     nama: 'Kamar Standard',
     deskripsi:
-      'Kamar nyaman untuk satu atau dua orang. Cocok untuk perjalanan singkat ' +
-      'maupun menginap sendirian.',
-    hargaPerMalam: 250000,
+      'Kamar dengan satu tempat tidur dan kamar mandi pribadi di dalam ' +
+      'kamar. Nyaman untuk berdua.',
+    hargaPerMalam: 100000,
     kapasitas: 2,
-    ukuran: '16 m²',
-    tipeKasur: '1 kasur queen',
-    fasilitas: ['AC', 'Wifi cepat', 'Kamar mandi dalam', 'Air panas', 'TV'],
-    gambar: '/kamar/standard.jpg',
+    ukuran: '9 m²',
+    tipeKasur: '1 kasur untuk 2 orang',
+    fasilitas: ['Kipas angin', 'Kamar mandi dalam'],
+    gambar: '/kamar/kamar-standard.jpg',
     tersedia: true,
   },
   {
     id: 'deluxe',
     nama: 'Kamar Deluxe',
     deskripsi:
-      'Lebih luas dengan area duduk dan jendela besar. Pilihan favorit ' +
-      'pasangan maupun tamu yang menginap lebih lama.',
-    hargaPerMalam: 375000,
-    kapasitas: 2,
-    ukuran: '24 m²',
-    tipeKasur: '1 kasur king',
-    fasilitas: ['AC', 'Wifi cepat', 'Kamar mandi dalam', 'Air panas', 'TV', 'Meja kerja', 'Kulkas mini'],
+      'Kamar luas dengan dua tempat tidur terpisah, AC, TV, dan jendela — ' +
+      'cocok untuk teman seperjalanan atau keluarga kecil.',
+    hargaPerMalam: 200000,
+    kapasitas: 3,
+    // TODO: ukuran kamar belum dipastikan
+    tipeKasur: '1 kasur queen + 1 kasur 120x200',
+    fasilitas: ['AC', 'TV', 'Kamar mandi dalam', 'Jendela'],
     gambar: '/kamar/deluxe.jpg',
     tersedia: true,
   },
   {
-    id: 'family',
-    nama: 'Kamar Family',
+    id: 'keluarga',
+    nama: 'Kamar Keluarga',
     deskripsi:
-      'Ruang lapang untuk keluarga kecil, dengan dua kasur terpisah ' +
-      'dan kamar mandi yang lebih besar.',
-    hargaPerMalam: 500000,
+      'Kamar keluarga luas dengan dua kasur queen, bisa ditambah kasur ' +
+      'ekstra untuk rombongan lebih besar.',
+    hargaPerMalam: 300000,
     kapasitas: 4,
-    ukuran: '32 m²',
-    tipeKasur: '1 kasur king + 2 kasur single',
-    fasilitas: ['AC', 'Wifi cepat', 'Kamar mandi dalam', 'Air panas', 'TV', 'Kulkas mini', 'Pemanas air'],
-    gambar: '/kamar/family.jpg',
+    ukuran: '20 m²',
+    tipeKasur: '2 kasur queen',
+    fasilitas: ['AC', 'Kamar mandi dalam', 'Bisa tambah extra bed'],
+    // Catatan: foto ini hasil AI (Google Gemini), dipilih sendiri oleh pemilik
+    gambar: '/kamar/keluarga.jpg',
     tersedia: true,
   },
 ];
