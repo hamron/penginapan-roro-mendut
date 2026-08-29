@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config';
+import { daftarWisata } from '../data/wisata';
+---
+
+<Layout
+  judul="Wisata Terdekat"
+  deskripsi={`Tempat wisata populer di sekitar ${site.namaPendek} — kawasan Mendut & Borobudur, lengkap dengan link Google Maps.`}
+>
+  <Header slot="header" />
+
+  {/* ============ BREADCRUMB ============ */}
+  <nav aria-label="Breadcrumb" class="border-b border-ink-200 bg-ink-50">
+    <div class="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 text-xs font-semibold tracking-wide text-ink-600 uppercase sm:px-6">
+      <a href="/" class="hover:text-brand-600">Beranda</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-ink-900">Wisata Terdekat</span>
+    </div>
+  </nav>
+
+  {/* ============ HERO HALAMAN ============ */}
+  <section class="mx-auto max-w-4xl px-4 py-14 text-center sm:px-6">
+    <p class="text-xs font-bold tracking-[0.2em] text-brand-600 uppercase">Jelajahi Sekitar</p>
+    <h1 class="mt-2 font-display text-3xl font-bold text-ink-900 sm:text-4xl">
+      Wisata <span class="text-brand-600 uppercase">Terdekat</span>
+    </h1>
+    <p class="mt-4 text-ink-600">
+      {site.namaPendek} berada tepat di kawasan Mendut — beberapa menit saja dari candi-candi bersejarah
+      dan spot wisata populer di seputar Borobudur. Berikut daftar lengkapnya, lengkap dengan link Google Maps.
+    </p>
+  </section>
+
+  {/* ============ DAFTAR WISATA ============ */}
+  <section class="border-t border-ink-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {daftarWisata.map((w) => (
+          <li class="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+            <div class="flex flex-col p-5">
+              <p class="font-display text-lg font-bold text-ink-900">{w.nama}</p>
+              <p class="mt-1 text-xs font-semibold tracking-wide text-brand-600 uppercase">{w.jarak}</p>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-600">{w.deskripsi}</p>
+              <a
+                href={w.gmaps}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:underline"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+                Lihat di Google Maps
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</Layout>
