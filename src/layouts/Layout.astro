@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site, alamatLengkap } from '../config';
+import { site, alamatLengkap, linkGoogleMaps } from '../config';
 
 interface Props {
   judul?: string;
@@ -12,7 +12,7 @@ interface Props {
 const {
   judul,
   deskripsi = site.deskripsi,
-  gambar = '/og-image.jpg',
+  gambar = '/hero.jpg',
 } = Astro.props;
 
 const judulLengkap = judul ? `${judul} — ${site.nama}` : `${site.nama} — ${site.tagline}`;
@@ -32,6 +32,9 @@ const schema = {
   telephone: site.telepon,
   email: site.email,
   image: urlGambar,
+  hasMap: linkGoogleMaps(),
+  sameAs: [linkGoogleMaps()],
+  areaServed: 'Borobudur, Mungkid, Magelang',
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.alamat.jalan,

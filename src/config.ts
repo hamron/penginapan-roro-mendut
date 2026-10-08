@@ -8,11 +8,10 @@
 export const site = {
   nama: 'Penginapan Roro Mendut',
   namaPendek: 'Roro Mendut',
-  tagline: 'Menginap tenang, 5 menit dari Candi Borobudur',
+  tagline: 'Penginapan murah, 5 menit dari Candi Borobudur',
   deskripsi:
-    'Penginapan bersih dan nyaman di kawasan Borobudur, Magelang. ' +
-    'Hanya beberapa menit dari Candi Borobudur, cocok untuk keluarga, ' +
-    'rombongan, maupun perjalanan singkat.',
+    'Penginapan murah di Mendut, Mungkid, Magelang — sekitar 5 menit berkendara dari ' +
+    'Candi Borobudur. Bersih, nyaman, parkir luas, cocok untuk keluarga dan rombongan.',
 
   url: 'https://penginapanroromendut.web.id',
 

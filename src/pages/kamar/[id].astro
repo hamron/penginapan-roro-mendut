@@ -26,7 +26,11 @@ const spesifikasi = [
 ].filter((s) => s.nilai);
 ---
 
-<Layout judul={kamar.nama} deskripsi={kamar.deskripsi} gambar={kamar.gambar}>
+<Layout
+  judul={`${kamar.nama} — Penginapan murah dekat Borobudur`}
+  deskripsi={`${kamar.deskripsi} Penginapan Roro Mendut, Mendut, Magelang.`}
+  gambar={kamar.gambar}
+>
   <Header slot="header" />
 
   {/* ============ BREADCRUMB ============ */}

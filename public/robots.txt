@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://penginapanroromendut.web.id/sitemap-index.xml
