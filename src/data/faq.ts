@@ -25,6 +25,12 @@ export const daftarFaq: Faq[] = [
       'Candi Mendut ada di kawasan yang sama.',
   },
   {
+    tanya: 'Apa aturan untuk tamu pasangan?',
+    jawab:
+      'Tamu pasangan wajib menunjukkan salah satu: buku nikah, foto buku nikah, foto akad nikah, ' +
+      'atau KTP kedua pasangan.',
+  },
+  {
     tanya: 'Berapa harga kamar?',
     jawab:
       `Harga mulai ${formatRupiah(hargaTerendah)} per malam, tergantung tipe kamar. ` +
